@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+final counterProvider = StateProvider<int>((ref) => 0);
+
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -10,6 +12,9 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    final countState = ref.watch(counterProvider.notifier);
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -19,13 +24,15 @@ class MyApp extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Count: 数字'),
+              Text('Count: $count'),
               const SizedBox(
                 height: 20,
               ),
               FloatingActionButton(
                 child: const Icon(Icons.add),
-                onPressed: () {},
+                onPressed: () {
+                  countState.state++;
+                },
               ),
             ],
           ),
