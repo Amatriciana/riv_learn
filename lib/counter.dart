@@ -1,7 +1,24 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final counterProvider = StateProvider<int>((ref) => 0);
+final counterProvider = StateNotifierProvider((ref) => CounterStateNotifier());
+
+class CounterStateNotifier extends StateNotifier {
+  CounterStateNotifier() : super(0);
+  void increment() {
+    state++;
+  }
+
+  void decrement() {
+    state--;
+  }
+
+  void reset() {
+    state = 0;
+  }
+}
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -28,10 +45,31 @@ class MyApp extends ConsumerWidget {
               const SizedBox(
                 height: 20,
               ),
-              FloatingActionButton(
-                child: const Icon(Icons.add),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      countState.increment();
+                    },
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    child: const Icon(Icons.remove),
+                    onPressed: () {
+                      countState.decrement();
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('リセット'),
                 onPressed: () {
-                  countState.state++;
+                  countState.reset();
                 },
               ),
             ],
