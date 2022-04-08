@@ -28,11 +28,20 @@ class MyApp extends ConsumerWidget {
               const SizedBox(
                 height: 20,
               ),
-              FloatingActionButton(
-                child: const Icon(Icons.add),
-                onPressed: () {
-                  countState.state++;
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      countState.state++;
+                    },
+                  ),
+                  FloatingActionButton(
+                    child: const Icon(Icons.remove),
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ],
           ),
