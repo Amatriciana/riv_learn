@@ -11,6 +11,12 @@ final resultStateNotifierProvider =
 
 class ResultStateNotifier extends StateNotifier {
   ResultStateNotifier() : super(0);
+
+  void calclate(text1, text2) {
+    int a = int.parse(text1.state.text);
+    int b = int.parse(text2.state.text);
+    state = a + b;
+  }
 }
 
 void main() {
@@ -23,7 +29,8 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final text1 = ref.watch(text1StateProvider.notifier);
     final text2 = ref.watch(text2StateProvider.notifier);
-    var result;
+    final result = ref.watch(resultStateNotifierProvider.notifier);
+    final result2 = ref.watch(resultStateNotifierProvider);
 
     return MaterialApp(
       home: Scaffold(
@@ -33,7 +40,7 @@ class MyApp extends ConsumerWidget {
         body: Center(
           child: Column(
             children: [
-              Text('Result: $result'),
+              Text('Result: $result2'),
               TextField(
                 controller: text1.state,
               ),
@@ -43,7 +50,7 @@ class MyApp extends ConsumerWidget {
               ElevatedButton(
                 child: const Text('計算'),
                 onPressed: () {
-                  result = text1.state.text + text2.state.text;
+                  result.calclate(text1, text2);
                 },
               ),
             ],
