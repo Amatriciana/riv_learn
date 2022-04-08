@@ -8,15 +8,17 @@ class CounterStateNotifier extends StateNotifier {
   CounterStateNotifier() : super(0) {
     getPrefs();
   }
-  void increment() => state++;
-  void decrement() => state--;
-  void reset() => state = 0;
+  void increment() => state++; //カウント加算
+  void decrement() => state--; //カウント減算
+  void reset() => state = 0; //カウントリセット
 
+  // SharedPreferencesに保存されたデータを反映
   Future<void> getPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     state = prefs.getInt('counter') ?? 0;
   }
 
+  // SharedPreferencesにカウント数を保存
   Future<void> setPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt('counter', state);
