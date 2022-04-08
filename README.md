@@ -15,3 +15,7 @@
 ## lib/counter.dart
 
 - Riverpodを使用したカウンターアプリ
+
+## lib/referenceについて
+
+- 出来るだけ小さい構成でパッケージ使用法の備忘録
