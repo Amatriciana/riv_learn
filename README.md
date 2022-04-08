@@ -16,6 +16,10 @@
 
 - Riverpodを使用したカウンターアプリ
 
+## lib/bmi_calc.dart
+
+- Riverpodを使用したBMI計算機
+
 ## lib/referenceについて
 
 - 出来るだけ小さい構成でパッケージ使用法の備忘録
