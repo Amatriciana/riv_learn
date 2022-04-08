@@ -14,6 +14,10 @@ class CounterStateNotifier extends StateNotifier {
   void decrement() {
     state--;
   }
+
+  void reset() {
+    state = 0;
+  }
 }
 
 void main() {
@@ -50,6 +54,9 @@ class MyApp extends ConsumerWidget {
                       countState.increment();
                     },
                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   FloatingActionButton(
                     child: const Icon(Icons.remove),
                     onPressed: () {
@@ -57,6 +64,13 @@ class MyApp extends ConsumerWidget {
                     },
                   ),
                 ],
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('リセット'),
+                onPressed: () {
+                  countState.reset();
+                },
               ),
             ],
           ),
