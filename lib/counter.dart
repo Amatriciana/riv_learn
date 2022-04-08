@@ -7,17 +7,9 @@ final counterProvider = StateNotifierProvider((ref) => CounterStateNotifier());
 
 class CounterStateNotifier extends StateNotifier {
   CounterStateNotifier() : super(0);
-  void increment() {
-    state++;
-  }
-
-  void decrement() {
-    state--;
-  }
-
-  void reset() {
-    state = 0;
-  }
+  void increment() => state++;
+  void decrement() => state--;
+  void reset() => state = 0;
 }
 
 void main() {
@@ -34,17 +26,13 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('CounterApp'),
-        ),
+        appBar: AppBar(title: const Text('CounterApp')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Count: $count'),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -54,9 +42,7 @@ class MyApp extends ConsumerWidget {
                       countState.increment();
                     },
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   FloatingActionButton(
                     child: const Icon(Icons.remove),
                     onPressed: () {
