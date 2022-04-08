@@ -1,15 +1,26 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final counterProvider = StateNotifierProvider((ref) => CounterStateNotifier());
 
 class CounterStateNotifier extends StateNotifier {
-  CounterStateNotifier() : super(0);
+  CounterStateNotifier() : super(0) {
+    getPrefs();
+  }
   void increment() => state++;
   void decrement() => state--;
   void reset() => state = 0;
+
+  Future<void> getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getInt('counter') ?? 0;
+  }
+
+  Future<void> setPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('counter', state);
+  }
 }
 
 void main() {
@@ -40,6 +51,7 @@ class MyApp extends ConsumerWidget {
                     child: const Icon(Icons.add),
                     onPressed: () {
                       countState.increment();
+                      countState.setPrefs();
                     },
                   ),
                   const SizedBox(width: 10),
@@ -47,6 +59,7 @@ class MyApp extends ConsumerWidget {
                     child: const Icon(Icons.remove),
                     onPressed: () {
                       countState.decrement();
+                      countState.setPrefs();
                     },
                   ),
                 ],
@@ -56,6 +69,7 @@ class MyApp extends ConsumerWidget {
                 child: const Text('リセット'),
                 onPressed: () {
                   countState.reset();
+                  countState.setPrefs();
                 },
               ),
             ],
