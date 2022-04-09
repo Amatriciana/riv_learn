@@ -10,12 +10,24 @@ final resultStateNotifierProvider =
     StateNotifierProvider((ref) => ResultStateNotifier());
 
 class ResultStateNotifier extends StateNotifier {
-  ResultStateNotifier() : super(0);
+  ResultStateNotifier() : super(0) {
+    getPrefs();
+  }
 
   void calclate(text1, text2) {
     double a = double.parse(text1.state.text) / 100;
     double b = double.parse(text2.state.text);
     state = b / (a * a);
+  }
+
+  Future<void> getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getDouble('result') ?? 0;
+  }
+
+  Future<void> setPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('result', state);
   }
 }
 
@@ -59,6 +71,7 @@ class MyApp extends ConsumerWidget {
                 child: const Text('計算'),
                 onPressed: () {
                   calculate.calclate(text1, text2);
+                  calculate.setPrefs();
                 },
               ),
               Text('Result: $result'),
