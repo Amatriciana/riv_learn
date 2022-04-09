@@ -13,9 +13,9 @@ class ResultStateNotifier extends StateNotifier {
   ResultStateNotifier() : super(0);
 
   void calclate(text1, text2) {
-    int a = int.parse(text1.state.text);
-    int b = int.parse(text2.state.text);
-    state = a + b;
+    double a = double.parse(text1.state.text) / 100;
+    double b = double.parse(text2.state.text);
+    state = b / (a * a);
   }
 }
 
@@ -39,13 +39,21 @@ class MyApp extends ConsumerWidget {
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Result: $result'),
               TextField(
                 controller: text1.state,
+                decoration: const InputDecoration(
+                  labelText: '身長',
+                  hintText: '身長を入力',
+                ),
               ),
               TextField(
                 controller: text2.state,
+                decoration: const InputDecoration(
+                  labelText: '体重',
+                  hintText: '体重を入力',
+                ),
               ),
               ElevatedButton(
                 child: const Text('計算'),
@@ -53,6 +61,7 @@ class MyApp extends ConsumerWidget {
                   calculate.calclate(text1, text2);
                 },
               ),
+              Text('Result: $result'),
             ],
           ),
         ),
