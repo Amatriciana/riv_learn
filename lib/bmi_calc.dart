@@ -84,7 +84,8 @@ class MyApp extends HookConsumerWidget {
         appBar: AppBar(
           title: const Text('BMI Calculator'),
         ),
-        body: Center(
+        body: Container(
+          padding: const EdgeInsets.all(50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
