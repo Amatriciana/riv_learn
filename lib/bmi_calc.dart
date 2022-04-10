@@ -11,9 +11,7 @@ final resultStateNotifierProvider =
     StateNotifierProvider((ref) => ResultStateNotifier());
 
 class ResultStateNotifier extends StateNotifier {
-  ResultStateNotifier() : super(0) {
-    getResult();
-  }
+  ResultStateNotifier() : super(0);
 
   void calclate(height, weight) {
     double a = double.parse(height) / 100;
@@ -61,21 +59,24 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final height = useState<double>(0);
-    final heightTextEditingController = useState(TextEditingController());
+    final heightTextEditingController = useTextEditingController();
 
     final weight = useState<double>(0);
-    final weightTextEditingController = useState(TextEditingController());
+    final weightTextEditingController = useTextEditingController();
 
     final calculate = ref.watch(resultStateNotifierProvider.notifier);
     final result = ref.watch(resultStateNotifierProvider);
 
+    // 初期値代入
     useEffect(() {
       Future(() async {
         height.value = await calculate.getHeight();
-        heightTextEditingController.value.text = height.value.toString();
+        heightTextEditingController.text = height.value.toString();
 
         weight.value = await calculate.getWeight();
-        weightTextEditingController.value.text = weight.value.toString();
+        weightTextEditingController.text = weight.value.toString();
+
+        calculate.getResult();
       });
       return null;
     }, []);
@@ -90,14 +91,14 @@ class MyApp extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                controller: heightTextEditingController.value,
+                controller: heightTextEditingController,
                 decoration: const InputDecoration(
                   labelText: '身長',
                   hintText: '身長を入力',
                 ),
               ),
               TextField(
-                controller: weightTextEditingController.value,
+                controller: weightTextEditingController,
                 decoration: const InputDecoration(
                   labelText: '体重',
                   hintText: '体重を入力',
@@ -106,13 +107,13 @@ class MyApp extends HookConsumerWidget {
               ElevatedButton(
                 child: const Text('計算'),
                 onPressed: () {
-                  calculate.calclate(heightTextEditingController.value.text,
+                  calculate.calclate(heightTextEditingController.text,
                       weightTextEditingController.value.text);
                   calculate.setResult();
                   calculate.setHeight(
-                      double.parse(heightTextEditingController.value.text));
+                      double.parse(heightTextEditingController.text));
                   calculate.setWeight(
-                      double.parse(weightTextEditingController.value.text));
+                      double.parse(weightTextEditingController.text));
                 },
               ),
               Text('Result: $result'),
