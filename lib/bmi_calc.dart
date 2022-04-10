@@ -3,10 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-// final text1StateProvider =
-//     StateProvider.autoDispose((ref) => TextEditingController());
-// final text2StateProvider =
-//     StateProvider.autoDispose((ref) => TextEditingController());
 final resultStateNotifierProvider =
     StateNotifierProvider((ref) => ResultStateNotifier());
 
