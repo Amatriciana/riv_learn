@@ -9,10 +9,10 @@ final resultStateNotifierProvider =
 class ResultStateNotifier extends StateNotifier {
   ResultStateNotifier() : super(0);
 
-  void calclate(String height, String weight) {
-    double a = double.parse(height);
+  void calclate(height, weight) {
+    double a = double.parse(height) / 100;
     double b = double.parse(weight);
-    state = b / (a * a / 10000);
+    state = b / (a * a);
   }
 
   Future<void> getResult() async {
@@ -20,11 +20,29 @@ class ResultStateNotifier extends StateNotifier {
     state = prefs.getDouble('result') ?? 0;
   }
 
-  Future<void> setForm(String height, String weight) async {
+  Future<void> setResult() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('height', height);
-    prefs.setString('weight', weight);
     prefs.setDouble('result', state);
+  }
+
+  Future<double> getHeight() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble('height') ?? 0;
+  }
+
+  Future<void> setHeight(double height) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('height', height);
+  }
+
+  Future<double> getWeight() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble('weight') ?? 0;
+  }
+
+  Future<void> setWeight(double weight) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('weight', weight);
   }
 }
 
@@ -36,7 +54,10 @@ class MyApp extends HookConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final height = useState<double>(0);
     final heightTextEditingController = useTextEditingController();
+
+    final weight = useState<double>(0);
     final weightTextEditingController = useTextEditingController();
 
     final calculate = ref.watch(resultStateNotifierProvider.notifier);
@@ -45,14 +66,16 @@ class MyApp extends HookConsumerWidget {
     // 初期値代入
     useEffect(() {
       Future(() async {
-        final prefs = await SharedPreferences.getInstance();
-        heightTextEditingController.text = prefs.getString('height') ?? '';
-        weightTextEditingController.text = prefs.getString('weight') ?? '';
+        height.value = await calculate.getHeight();
+        heightTextEditingController.text = height.value.toString();
+
+        weight.value = await calculate.getWeight();
+        weightTextEditingController.text = weight.value.toString();
+
         calculate.getResult();
       });
       return null;
     }, []);
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -80,14 +103,13 @@ class MyApp extends HookConsumerWidget {
               ElevatedButton(
                 child: const Text('計算'),
                 onPressed: () {
-                  calculate.calclate(
-                    heightTextEditingController.text,
-                    weightTextEditingController.text,
-                  );
-                  calculate.setForm(
-                    heightTextEditingController.text,
-                    weightTextEditingController.text,
-                  );
+                  calculate.calclate(heightTextEditingController.text,
+                      weightTextEditingController.value.text);
+                  calculate.setResult();
+                  calculate.setHeight(
+                      double.parse(heightTextEditingController.text));
+                  calculate.setWeight(
+                      double.parse(weightTextEditingController.text));
                 },
               ),
               Text('Result: $result'),
