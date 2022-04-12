@@ -25,58 +25,49 @@ class CounterStateNotifier extends StateNotifier {
   }
 }
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
-}
-
-class MyApp extends ConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+class CounterApp extends ConsumerWidget {
+  const CounterApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final count = ref.watch(counterProvider);
     final countState = ref.watch(counterProvider.notifier);
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('CounterApp')),
-        body: Center(
-          child: Column(
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Count: $count'),
+          const SizedBox(height: 20),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Count: $count'),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    child: const Icon(Icons.add),
-                    onPressed: () {
-                      countState.increment();
-                      countState.setPrefs();
-                    },
-                  ),
-                  const SizedBox(width: 10),
-                  FloatingActionButton(
-                    child: const Icon(Icons.remove),
-                    onPressed: () {
-                      countState.decrement();
-                      countState.setPrefs();
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                child: const Text('リセット'),
+              FloatingActionButton(
+                child: const Icon(Icons.add),
                 onPressed: () {
-                  countState.reset();
+                  countState.increment();
+                  countState.setPrefs();
+                },
+              ),
+              const SizedBox(width: 10),
+              FloatingActionButton(
+                child: const Icon(Icons.remove),
+                onPressed: () {
+                  countState.decrement();
                   countState.setPrefs();
                 },
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            child: const Text('リセット'),
+            onPressed: () {
+              countState.reset();
+              countState.setPrefs();
+            },
+          ),
+        ],
       ),
     );
   }
