@@ -15,12 +15,12 @@ class ResultStateNotifier extends StateNotifier {
     state = b / (a * a / 10000);
   }
 
-  Future<void> getResult() async {
+  Future<void> getResultPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     state = prefs.getDouble('result') ?? 0;
   }
 
-  Future<void> setForm(String height, String weight) async {
+  Future<void> setFormPrefs(String height, String weight) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('height', height);
     prefs.setString('weight', weight);
@@ -35,7 +35,7 @@ class BmiCalcApp extends HookConsumerWidget {
     final heightTextEditingController = useTextEditingController();
     final weightTextEditingController = useTextEditingController();
 
-    final calculate = ref.read(resultStateNotifierProvider.notifier);
+    final calculate = ref.watch(resultStateNotifierProvider.notifier);
     final result = ref.watch(resultStateNotifierProvider);
 
     // 初期値代入
@@ -44,45 +44,50 @@ class BmiCalcApp extends HookConsumerWidget {
         final prefs = await SharedPreferences.getInstance();
         heightTextEditingController.text = prefs.getString('height') ?? '';
         weightTextEditingController.text = prefs.getString('weight') ?? '';
-        calculate.getResult();
+        calculate.getResultPrefs();
       });
       return null;
     }, []);
 
-    return Container(
-      padding: const EdgeInsets.all(50),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            controller: heightTextEditingController,
-            decoration: const InputDecoration(
-              labelText: '身長',
-              hintText: '身長を入力',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('BMICalculator'),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: heightTextEditingController,
+              decoration: const InputDecoration(
+                labelText: '身長',
+                hintText: '身長を入力',
+              ),
             ),
-          ),
-          TextField(
-            controller: weightTextEditingController,
-            decoration: const InputDecoration(
-              labelText: '体重',
-              hintText: '体重を入力',
+            TextField(
+              controller: weightTextEditingController,
+              decoration: const InputDecoration(
+                labelText: '体重',
+                hintText: '体重を入力',
+              ),
             ),
-          ),
-          ElevatedButton(
-            child: const Text('計算'),
-            onPressed: () {
-              calculate.calclate(
-                heightTextEditingController.text,
-                weightTextEditingController.text,
-              );
-              calculate.setForm(
-                heightTextEditingController.text,
-                weightTextEditingController.text,
-              );
-            },
-          ),
-          Text('Result: $result'),
-        ],
+            ElevatedButton(
+              child: const Text('計算'),
+              onPressed: () {
+                calculate.calclate(
+                  heightTextEditingController.text,
+                  weightTextEditingController.text,
+                );
+                calculate.setFormPrefs(
+                  heightTextEditingController.text,
+                  weightTextEditingController.text,
+                );
+              },
+            ),
+            Text('Result: $result'),
+          ],
+        ),
       ),
     );
   }
