@@ -28,12 +28,8 @@ class ResultStateNotifier extends StateNotifier {
   }
 }
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
-}
-
-class MyApp extends HookConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+class BmiCalcApp extends HookConsumerWidget {
+  const BmiCalcApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final heightTextEditingController = useTextEditingController();
