@@ -5,8 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'counter.dart';
 import 'bmi_calc.dart';
 
-final bottomNavigationProvider =
-    StateProvider<BottomNav>((ref) => BottomNav.counter);
+final bottomNavProvider = StateProvider<BottomNav>((ref) => BottomNav.counter);
 
 enum BottomNav {
   counter,
@@ -22,8 +21,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bottomNavState = ref.watch(bottomNavigationProvider);
-    final bottomNavState2 = ref.watch(bottomNavigationProvider.notifier);
+    final bottomNavState = ref.watch(bottomNavProvider);
+    final bottomNavState2 = ref.watch(bottomNavProvider.notifier);
 
     final _pageList = [
       const CounterApp(),
@@ -34,17 +33,20 @@ class MyApp extends ConsumerWidget {
         home: Scaffold(
       body: _pageList[bottomNavState.index],
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (int selectIndex) {
-          bottomNavState2.state = BottomNav.values[selectIndex];
+        currentIndex: bottomNavState.index,
+        onTap: (int selectPage) {
+          bottomNavState2.state = BottomNav.values[selectPage];
         },
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'add',
+            label: 'カウンター',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'add',
+            label: 'BMI計算',
           ),
         ],
       ),
