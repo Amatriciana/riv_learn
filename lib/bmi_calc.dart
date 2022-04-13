@@ -49,40 +49,45 @@ class BmiCalcApp extends HookConsumerWidget {
       return null;
     }, []);
 
-    return Container(
-      padding: const EdgeInsets.all(50),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            controller: heightTextEditingController,
-            decoration: const InputDecoration(
-              labelText: '身長',
-              hintText: '身長を入力',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('BMICalculator'),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: heightTextEditingController,
+              decoration: const InputDecoration(
+                labelText: '身長',
+                hintText: '身長を入力',
+              ),
             ),
-          ),
-          TextField(
-            controller: weightTextEditingController,
-            decoration: const InputDecoration(
-              labelText: '体重',
-              hintText: '体重を入力',
+            TextField(
+              controller: weightTextEditingController,
+              decoration: const InputDecoration(
+                labelText: '体重',
+                hintText: '体重を入力',
+              ),
             ),
-          ),
-          ElevatedButton(
-            child: const Text('計算'),
-            onPressed: () {
-              calculate.calclate(
-                heightTextEditingController.text,
-                weightTextEditingController.text,
-              );
-              calculate.setForm(
-                heightTextEditingController.text,
-                weightTextEditingController.text,
-              );
-            },
-          ),
-          Text('Result: $result'),
-        ],
+            ElevatedButton(
+              child: const Text('計算'),
+              onPressed: () {
+                calculate.calclate(
+                  heightTextEditingController.text,
+                  weightTextEditingController.text,
+                );
+                calculate.setForm(
+                  heightTextEditingController.text,
+                  weightTextEditingController.text,
+                );
+              },
+            ),
+            Text('Result: $result'),
+          ],
+        ),
       ),
     );
   }

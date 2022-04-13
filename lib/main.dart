@@ -28,29 +28,27 @@ class MyApp extends ConsumerWidget {
     ];
 
     return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: const Text('TestApps'),
+      home: Scaffold(
+        body: _pageList[bottomNavState.index],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: bottomNavState.index,
+          onTap: (int selectPage) {
+            bottomNavState2.state = BottomNav.values[selectPage];
+          },
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'カウンター',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'BMI計算',
+            ),
+          ],
+        ),
       ),
-      body: _pageList[bottomNavState.index],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: bottomNavState.index,
-        onTap: (int selectPage) {
-          bottomNavState2.state = BottomNav.values[selectPage];
-        },
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'カウンター',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'BMI計算',
-          ),
-        ],
-      ),
-    ));
+    );
   }
 }
