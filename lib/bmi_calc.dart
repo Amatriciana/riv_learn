@@ -35,7 +35,7 @@ class BmiCalcApp extends HookConsumerWidget {
     final heightTextEditingController = useTextEditingController();
     final weightTextEditingController = useTextEditingController();
 
-    final calculate = ref.read(resultStateNotifierProvider.notifier);
+    final calculate = ref.watch(resultStateNotifierProvider.notifier);
     final result = ref.watch(resultStateNotifierProvider);
 
     // 初期値代入
