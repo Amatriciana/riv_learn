@@ -31,6 +31,9 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp(
         home: Scaffold(
+      appBar: AppBar(
+        title: const Text('TestApps'),
+      ),
       body: _pageList[bottomNavState.index],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: bottomNavState.index,
