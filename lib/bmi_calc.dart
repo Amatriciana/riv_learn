@@ -15,12 +15,12 @@ class ResultStateNotifier extends StateNotifier {
     state = b / (a * a / 10000);
   }
 
-  Future<void> getResult() async {
+  Future<void> getResultPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     state = prefs.getDouble('result') ?? 0;
   }
 
-  Future<void> setForm(String height, String weight) async {
+  Future<void> setFormPrefs(String height, String weight) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('height', height);
     prefs.setString('weight', weight);
@@ -44,7 +44,7 @@ class BmiCalcApp extends HookConsumerWidget {
         final prefs = await SharedPreferences.getInstance();
         heightTextEditingController.text = prefs.getString('height') ?? '';
         weightTextEditingController.text = prefs.getString('weight') ?? '';
-        calculate.getResult();
+        calculate.getResultPrefs();
       });
       return null;
     }, []);
@@ -79,7 +79,7 @@ class BmiCalcApp extends HookConsumerWidget {
                   heightTextEditingController.text,
                   weightTextEditingController.text,
                 );
-                calculate.setForm(
+                calculate.setFormPrefs(
                   heightTextEditingController.text,
                   weightTextEditingController.text,
                 );

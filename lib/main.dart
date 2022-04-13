@@ -19,8 +19,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bottomNavState = ref.watch(bottomNavProvider);
-    final bottomNavState2 = ref.watch(bottomNavProvider.notifier);
+    final bottomNav = ref.watch(bottomNavProvider);
+    final bottomNavState = ref.watch(bottomNavProvider.notifier);
 
     final _pageList = [
       const CounterApp(),
@@ -29,11 +29,11 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp(
       home: Scaffold(
-        body: _pageList[bottomNavState.index],
+        body: _pageList[bottomNav.index],
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: bottomNavState.index,
+          currentIndex: bottomNav.index,
           onTap: (int selectPage) {
-            bottomNavState2.state = BottomNav.values[selectPage];
+            bottomNavState.state = BottomNav.values[selectPage];
           },
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
