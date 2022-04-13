@@ -17,6 +17,19 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
       appBar: AppBar(title: const Text('testApp')),
       body: const CounterApp(),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) => {},
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'add',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'add',
+          ),
+        ],
+      ),
     ));
   }
 }
