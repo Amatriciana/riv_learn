@@ -1,20 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'bmi_calc.dart';
 
-final listStreamProvider = FutureProvider((ref) async {
+final listStreamProvider = FutureProvider.autoDispose((ref) async {
   final prefs = await SharedPreferences.getInstance();
   List formList = [];
-  formList.add(prefs.getString('height') ?? 'aaa');
-  formList.add(prefs.getString('weight') ?? 'iii');
-
+  if (prefs.getString('height') != null) {
+    formList.add(prefs.getString('height'));
+  }
+  if (prefs.getString('weight') != null) {
+    formList.add(prefs.getString('weight'));
+  }
+  print(formList);
   return formList;
 });
 
-class BmiHistory extends HookConsumerWidget {
+class BmiHistory extends ConsumerWidget {
   const BmiHistory({Key? key}) : super(key: key);
 
   @override
