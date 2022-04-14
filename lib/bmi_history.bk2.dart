@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'bmi_calc.dart';
 
 final listProvider = StateNotifierProvider((ref) => ListNotifier());
 
@@ -17,7 +16,6 @@ class ListNotifier<List, String> extends StateNotifier {
     final prefs = await SharedPreferences.getInstance();
     state.add(prefs.getString('height') ?? 'aaa');
     state.add(prefs.getString('weight') ?? 'iii');
-    print(state);
   }
 }
 
@@ -30,7 +28,6 @@ class BmiHistory extends HookConsumerWidget {
     useEffect(() {
       listState.initialize();
       listState.getHeightPrefs();
-      print(listState.state);
       return null;
     }, []);
     return Scaffold(

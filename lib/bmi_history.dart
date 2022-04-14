@@ -12,7 +12,6 @@ final listStreamProvider = FutureProvider.autoDispose((ref) async {
   if (prefs.getString('weight') != null) {
     formList.add(prefs.getString('weight'));
   }
-  print(formList);
   return formList;
 });
 
@@ -47,9 +46,7 @@ class BmiHistory extends ConsumerWidget {
                     fontSize: 18,
                   ),
                 ),
-                onTap: () {
-                  print(data[index]);
-                },
+                onTap: () {},
               ),
             );
           },
