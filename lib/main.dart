@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'counter.dart';
 import 'bmi_calc.dart';
+import 'bmi_history.dart';
 
 final bottomNavProvider = StateProvider<BottomNav>((ref) => BottomNav.counter);
 
 enum BottomNav {
   counter,
   bmiCalc,
+  bmiHistory,
 }
 
 void main() {
@@ -22,9 +24,10 @@ class MyApp extends ConsumerWidget {
     final bottomNav = ref.watch(bottomNavProvider);
     final bottomNavState = ref.watch(bottomNavProvider.notifier);
 
-    final _pageList = [
+    final List _pageList = [
       const CounterApp(),
       const BmiCalcApp(),
+      const BmiHistory(),
     ];
 
     return MaterialApp(
@@ -45,6 +48,10 @@ class MyApp extends ConsumerWidget {
             BottomNavigationBarItem(
               icon: Icon(Icons.add),
               label: 'BMI計算',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'BMI履歴',
             ),
           ],
         ),
