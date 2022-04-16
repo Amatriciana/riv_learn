@@ -1,19 +1,38 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'counter.dart';
 import 'bmi_calc.dart';
 import 'bmi_history.dart';
+import 'controller.dart';
 
-final bottomNavProvider = StateProvider<BottomNav>((ref) => BottomNav.counter);
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-enum BottomNav {
-  counter,
-  bmiCalc,
-  bmiHistory,
-}
-
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  late final SharedPreferences sharedPreferences;
+  await Future.wait(
+    [
+      Future(() async {
+        sharedPreferences = await SharedPreferences.getInstance();
+      }),
+    ],
+  );
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences)
+      ],
+      child: Consumer(
+        builder: (context, ref, child) {
+          return child!;
+        },
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {

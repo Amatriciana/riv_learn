@@ -1,29 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-final counterProvider = StateNotifierProvider((ref) => CounterStateNotifier());
-
-class CounterStateNotifier extends StateNotifier {
-  CounterStateNotifier() : super(0);
-
-  void increment() => state++; //カウント加算
-  void decrement() => state--; //カウント減算
-  void reset() => state = 0; //カウントリセット
-
-  // SharedPreferencesに保存されたデータを反映
-  Future<void> getCountPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    state = prefs.getInt('counter') ?? 0;
-  }
-
-  // SharedPreferencesにカウント数を保存
-  Future<void> setCountPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('counter', state);
-  }
-}
+import 'controller.dart';
 
 class CounterApp extends HookConsumerWidget {
   const CounterApp({Key? key}) : super(key: key);
