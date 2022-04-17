@@ -49,7 +49,8 @@ class ResultController extends StateNotifier {
     //TODO 数字以外が入力された時の処理をどうするか
     double a = double.parse(height);
     double b = double.parse(weight);
-    state = (b / (a * a / 10000)).toString();
+    state = (b / (a * a / 10000)).toStringAsFixed(2);
+    print((b / (a * a / 10000)).toString());
   }
 
   Future<List> getFormListPrefs() async {
@@ -103,12 +104,16 @@ class ListController<List> extends StateNotifier {
 
   final Reader _refRead;
 
-  Future<void> getHeightPrefs() async {
-    if (_refRead(sharedPreferencesProvider).getString('height') != null) {
-      state.add(_refRead(sharedPreferencesProvider).getString('height'));
-    }
-    if (_refRead(sharedPreferencesProvider).getString('weight') != null) {
-      state.add(_refRead(sharedPreferencesProvider).getString('weight'));
-    }
+  Future<void> getListprefs() async {
+    state.add(_refRead(sharedPreferencesProvider).getStringList('form'));
   }
+
+  // Future<void> getHeightPrefs() async {
+  //   if (_refRead(sharedPreferencesProvider).getString('height') != null) {
+  //     state.add(_refRead(sharedPreferencesProvider).getString('height'));
+  //   }
+  //   if (_refRead(sharedPreferencesProvider).getString('weight') != null) {
+  //     state.add(_refRead(sharedPreferencesProvider).getString('weight'));
+  //   }
+  // }
 }

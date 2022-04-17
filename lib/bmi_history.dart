@@ -13,7 +13,7 @@ class BmiHistory extends HookConsumerWidget {
     final listState = ref.watch(listProvider.notifier);
 
     useEffect(() {
-      listState.getHeightPrefs();
+      listState.getListprefs();
       print(list);
       return null;
     }, []);
@@ -36,7 +36,9 @@ class BmiHistory extends HookConsumerWidget {
             ),
             child: ListTile(
               title: Text(
-                listState.state[index],
+                '身長: ${listState.state[index][1]}  '
+                '体重: ${listState.state[index][2]}  '
+                'BMI: ${listState.state[index][0]}',
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 18,
