@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'controller.dart';
 
@@ -17,10 +16,18 @@ class BmiCalcApp extends HookConsumerWidget {
     // 初期値代入
     useEffect(() {
       Future(() async {
-        heightTextEditingController.text =
-            calculate.getHeightPrefs().toString();
+        // heightTextEditingController.text =
+        //     await calculate.getFormPrefs('height');
+        // weightTextEditingController.text =
+        //     await calculate.getFormPrefs('weight');
+
+        // TODO 上のStringと下のMapとどっちがいいか
+
+        final valueMap = await calculate.getFormMapPrefs(); // TODO なぜawaitが要るのか
+        heightTextEditingController.text = valueMap['height'].toString();
+        weightTextEditingController.text = valueMap['weight'].toString();
+
         calculate.getResultPrefs();
-        print(heightTextEditingController.text);
       });
       return null;
     }, []);
