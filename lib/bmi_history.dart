@@ -43,9 +43,7 @@ class BmiHistory extends HookConsumerWidget {
                   fontSize: 18,
                 ),
               ),
-              onTap: () {
-                print(list);
-              },
+              onTap: () {},
             ),
           );
         },
