@@ -77,7 +77,7 @@ class ListController<List> extends StateNotifier {
   final Reader _refRead;
 
   Future<void> getListprefs() async {
-    if (_refRead(sharedPreferencesProvider).getStringList('from') != null) {
+    if (_refRead(sharedPreferencesProvider).getStringList('form') != null) {
       state.add(_refRead(sharedPreferencesProvider).getStringList('form'));
     }
   }
