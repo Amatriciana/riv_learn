@@ -17,18 +17,10 @@ class BmiCalcApp extends HookConsumerWidget {
     // 初期値代入
     useEffect(() {
       Future(() async {
-        // heightTextEditingController.text =
-        //     await calculate.getFormPrefs('height');
-        // weightTextEditingController.text =
-        //     await calculate.getFormPrefs('weight');
-
-        // TODO 上のStringと下のMapとどっちがいいか
-
-        final valueMap = await calculate.getFormMapPrefs(); // TODO なぜawaitが要るのか
-        heightTextEditingController.text = valueMap['height'].toString();
-        weightTextEditingController.text = valueMap['weight'].toString();
-
-        calculate.getResultPrefs();
+        final formList =
+            await calculate.getFormListPrefs(); // TODO なぜawaitが要るのか
+        heightTextEditingController.text = formList[1].toString();
+        weightTextEditingController.text = formList[2].toString();
       });
       return null;
     }, []);

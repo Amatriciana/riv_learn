@@ -9,11 +9,12 @@ class BmiHistory extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final list = ref.watch(listProvider);
     final listState = ref.watch(listProvider.notifier);
 
     useEffect(() {
-      listState.initialize();
       listState.getHeightPrefs();
+      print(list);
       return null;
     }, []);
 
@@ -42,7 +43,7 @@ class BmiHistory extends HookConsumerWidget {
                 ),
               ),
               onTap: () {
-                print(listState.state[index]);
+                print(list);
               },
             ),
           );

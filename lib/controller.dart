@@ -46,14 +46,28 @@ class ResultController extends StateNotifier {
   final Reader _refRead;
 
   void calculate(String height, String weight) {
+    //TODO 数字以外が入力された時の処理をどうするか
     double a = double.parse(height);
     double b = double.parse(weight);
-    state = b / (a * a / 10000);
+    state = (b / (a * a / 10000)).toString();
   }
 
-  Future<void> getResultPrefs() async {
-    state = _refRead(sharedPreferencesProvider).getDouble('result') ?? 0;
+  Future<List> getFormListPrefs() async {
+    final List formList =
+        _refRead(sharedPreferencesProvider).getStringList('form') ??
+            ['', '', ''];
+    state = formList[0];
+    return formList;
   }
+
+  Future<void> setFormPrefs(String height, String weight) async {
+    _refRead(sharedPreferencesProvider)
+        .setStringList('form', [state, height, weight]);
+  }
+
+  // Future<void> getResultPrefs() async {
+  //   state = _refRead(sharedPreferencesProvider).getString('result') ?? '';
+  // }
 
   // Future<String> getFormPrefs(key) async {
   //   final String value;
@@ -62,37 +76,39 @@ class ResultController extends StateNotifier {
   // }
 
   // TODO 上のStringと下のMapどっちがいいか
+  // TODO awaitできるものと出来ないものがある何故か、awaitしたほうがいいのか
 
-  Future<Map<String, String>> getFormMapPrefs() async {
-    final Map<String, String> valueMap = {
-      'height': _refRead(sharedPreferencesProvider).getString('height') ?? '',
-      'weight': _refRead(sharedPreferencesProvider).getString('weight') ?? '',
-    };
+  // Future<Map<String, String>> getFormMapPrefs() async {
+  //   final Map<String, String> valueMap = {
+  //     'height': _refRead(sharedPreferencesProvider).getString('height') ?? '',
+  //     'weight': _refRead(sharedPreferencesProvider).getString('weight') ?? '',
+  //   };
+  //   return valueMap;
+  // }
 
-    return valueMap;
-  }
+  // Future<void> setFormPrefs(String height, String weight) async {
+  //   _refRead(sharedPreferencesProvider).setString('height', height);
+  //   _refRead(sharedPreferencesProvider).setString('weight', weight);
+  //   _refRead(sharedPreferencesProvider).setString('result', state);
+  // }
 
-  Future<void> setFormPrefs(String height, String weight) async {
-    _refRead(sharedPreferencesProvider).setString('height', height);
-    _refRead(sharedPreferencesProvider).setString('weight', weight);
-    _refRead(sharedPreferencesProvider).setDouble('result', state);
-  }
 }
 
 // BMI履歴用プロバイダ
-final listProvider = StateNotifierProvider((ref) => ListController(ref.read));
+final listProvider =
+    StateNotifierProvider.autoDispose((ref) => ListController(ref.read));
 
 class ListController<List> extends StateNotifier {
   ListController(this._refRead) : super([]);
 
   final Reader _refRead;
 
-  void initialize() {
-    state = [];
-  }
-
   Future<void> getHeightPrefs() async {
-    state.add(_refRead(sharedPreferencesProvider).getString('height') ?? 'aaa');
-    state.add(_refRead(sharedPreferencesProvider).getString('weight') ?? 'iii');
+    if (_refRead(sharedPreferencesProvider).getString('height') != null) {
+      state.add(_refRead(sharedPreferencesProvider).getString('height'));
+    }
+    if (_refRead(sharedPreferencesProvider).getString('weight') != null) {
+      state.add(_refRead(sharedPreferencesProvider).getString('weight'));
+    }
   }
 }
