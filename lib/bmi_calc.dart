@@ -1,50 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-final resultStateNotifierProvider =
-    StateNotifierProvider((ref) => ResultStateNotifier());
-
-class ResultStateNotifier extends StateNotifier {
-  ResultStateNotifier() : super(0);
-
-  void calclate(String height, String weight) {
-    double a = double.parse(height);
-    double b = double.parse(weight);
-    state = b / (a * a / 10000);
-  }
-
-  Future<void> getResultPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    state = prefs.getDouble('result') ?? 0;
-  }
-
-  Future<void> setFormPrefs(String height, String weight) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('height', height);
-    prefs.setString('weight', weight);
-    prefs.setDouble('result', state);
-  }
-}
+import 'controller.dart';
 
 class BmiCalcApp extends HookConsumerWidget {
   const BmiCalcApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final heightTextEditingController = useTextEditingController();
     final weightTextEditingController = useTextEditingController();
 
-    final calculate = ref.watch(resultStateNotifierProvider.notifier);
-    final result = ref.watch(resultStateNotifierProvider);
+    final calculate = ref.watch(resultProvider.notifier);
+    final result = ref.watch(resultProvider);
 
     // 初期値代入
     useEffect(() {
       Future(() async {
-        final prefs = await SharedPreferences.getInstance();
-        heightTextEditingController.text = prefs.getString('height') ?? '';
-        weightTextEditingController.text = prefs.getString('weight') ?? '';
-        calculate.getResultPrefs();
+        final formList =
+            await calculate.getFormListPrefs(); // TODO なぜawaitが要るのか
+        heightTextEditingController.text = formList[1].toString();
+        weightTextEditingController.text = formList[2].toString();
       });
       return null;
     }, []);
@@ -75,7 +51,7 @@ class BmiCalcApp extends HookConsumerWidget {
             ElevatedButton(
               child: const Text('計算'),
               onPressed: () {
-                calculate.calclate(
+                calculate.calculate(
                   heightTextEditingController.text,
                   weightTextEditingController.text,
                 );
