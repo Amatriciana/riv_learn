@@ -65,39 +65,11 @@ class ResultController extends StateNotifier {
     _refRead(sharedPreferencesProvider)
         .setStringList('form', [state, height, weight]);
   }
-
-  // Future<void> getResultPrefs() async {
-  //   state = _refRead(sharedPreferencesProvider).getString('result') ?? '';
-  // }
-
-  // Future<String> getFormPrefs(key) async {
-  //   final String value;
-  //   value = _refRead(sharedPreferencesProvider).getString(key) ?? '';
-  //   return value;
-  // }
-
-  // TODO 上のStringと下のMapどっちがいいか
-  // TODO awaitできるものと出来ないものがある何故か、awaitしたほうがいいのか
-
-  // Future<Map<String, String>> getFormMapPrefs() async {
-  //   final Map<String, String> valueMap = {
-  //     'height': _refRead(sharedPreferencesProvider).getString('height') ?? '',
-  //     'weight': _refRead(sharedPreferencesProvider).getString('weight') ?? '',
-  //   };
-  //   return valueMap;
-  // }
-
-  // Future<void> setFormPrefs(String height, String weight) async {
-  //   _refRead(sharedPreferencesProvider).setString('height', height);
-  //   _refRead(sharedPreferencesProvider).setString('weight', weight);
-  //   _refRead(sharedPreferencesProvider).setString('result', state);
-  // }
-
 }
 
 // BMI履歴用プロバイダ
 final listProvider =
-    StateNotifierProvider.autoDispose((ref) => ListController(ref.read));
+    StateNotifierProvider.autoDispose((ref) => ListController<List>(ref.read));
 
 class ListController<List> extends StateNotifier {
   ListController(this._refRead) : super([]);
@@ -105,8 +77,11 @@ class ListController<List> extends StateNotifier {
   final Reader _refRead;
 
   Future<void> getListprefs() async {
-    state.add(_refRead(sharedPreferencesProvider).getStringList('form'));
+    if (_refRead(sharedPreferencesProvider).getStringList('from') != null) {
+      state.add(_refRead(sharedPreferencesProvider).getStringList('form'));
+    }
   }
+}
 
   // Future<void> getHeightPrefs() async {
   //   if (_refRead(sharedPreferencesProvider).getString('height') != null) {
@@ -115,5 +90,5 @@ class ListController<List> extends StateNotifier {
   //   if (_refRead(sharedPreferencesProvider).getString('weight') != null) {
   //     state.add(_refRead(sharedPreferencesProvider).getString('weight'));
   //   }
-  // }
-}
+  // }}
+
