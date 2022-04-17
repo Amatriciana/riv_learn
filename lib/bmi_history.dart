@@ -14,7 +14,6 @@ class BmiHistory extends HookConsumerWidget {
 
     useEffect(() {
       listState.getListprefs();
-      print(list);
       return null;
     }, []);
 
