@@ -20,6 +20,16 @@
 
 - Riverpodを使用したBMI計算機
 
+## lib/bmi_history.dart
+
+- BMI計算機の結果履歴をリスト表示
+
+## lib/controller.dart
+
+- 練習がてらファイルを分けてみた
+
 ## lib/referenceについて
 
 - 出来るだけ小さい構成でパッケージ使用法の備忘録
+
+- ↑の予定だったが、完全にただの物置
