@@ -22,7 +22,7 @@ class BmiHistory extends HookConsumerWidget {
         title: const Text('BMI Calculate History'),
       ),
       body: ListView.builder(
-        itemCount: listState.state.length,
+        itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             decoration: const BoxDecoration(
@@ -35,9 +35,9 @@ class BmiHistory extends HookConsumerWidget {
             ),
             child: ListTile(
               title: Text(
-                '身長: ${listState.state[index][1]}  '
-                '体重: ${listState.state[index][2]}  '
-                'BMI: ${listState.state[index][0]}',
+                '身長: ${list[index][1]}  '
+                '体重: ${list[index][2]}  '
+                'BMI: ${list[index][0]}',
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 18,
