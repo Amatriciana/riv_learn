@@ -10,7 +10,7 @@
 
 ## lib/main.dart
 
-- `flutter create`直後そのままのmain.dart
+- main.dart
 
 ## lib/counter.dart
 
