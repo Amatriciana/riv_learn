@@ -88,13 +88,8 @@ class ListController extends StateNotifier<List> {
       state.add(_read(sharedPreferencesProvider).getStringList('form'));
     }
   }
-}
-  // Future<void> getHeightPrefs() async {
-  //   if (_read(sharedPreferencesProvider).getString('height') != null) {
-  //     state.add(_read(sharedPreferencesProvider).getString('height'));
-  //   }
-  //   if (_read(sharedPreferencesProvider).getString('weight') != null) {
-  //     state.add(_read(sharedPreferencesProvider).getString('weight'));
-  //   }
-  // }}
 
+  Future<void> clearListPrefs(key) async {
+    await _read(sharedPreferencesProvider).remove(key);
+  }
+}

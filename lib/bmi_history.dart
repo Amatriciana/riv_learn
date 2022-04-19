@@ -24,27 +24,36 @@ class BmiHistory extends HookConsumerWidget {
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  width: 1,
-                  color: Colors.grey,
+          return Dismissible(
+            key: UniqueKey(),
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      '身長: ${list[index][1]}  '
+                      '体重: ${list[index][2]}  '
+                      'BMI: ${list[index][0]}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            child: ListTile(
-              title: Text(
-                '身長: ${list[index][1]}  '
-                '体重: ${list[index][2]}  '
-                'BMI: ${list[index][0]}',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
-              onTap: () {},
-            ),
+            onDismissed: (direction) {
+              listState.clearListPrefs('form');
+            },
           );
         },
       ),
