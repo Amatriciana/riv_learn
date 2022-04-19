@@ -15,80 +15,88 @@ enum BottomNav {
 }
 
 // カウンターアプリ用プロバイダ
-final counterProvider =
-    StateNotifierProvider((ref) => CounterController(ref.read));
+final counterProvider = StateNotifierProvider<CounterController, int>(
+    (ref) => CounterController(ref.read));
 
-class CounterController extends StateNotifier {
-  CounterController(this._refRead) : super(0);
+class CounterController extends StateNotifier<int> {
+  CounterController(this._read) : super(0);
 
-  final Reader _refRead;
+  final Reader _read;
 
-  void increment() => state++;
-  void decrement() => state--;
-  void reset() => state = 0;
+  void increment() => state++; // カウントアップ
+  void decrement() => state--; // カウントダウン
+  void reset() => state = 0; // カウントを0に
 
+  // shared_preferencesからデータ読み込み
   Future<void> getCountPrefs() async {
-    state = _refRead(sharedPreferencesProvider).getInt('counter') ?? 0;
+    state = _read(sharedPreferencesProvider).getInt('counter') ?? 0;
   }
 
+  // shared_preferencesにデータ保存
   Future<void> setCountPrefs() async {
-    _refRead(sharedPreferencesProvider).setInt('counter', state);
+    _read(sharedPreferencesProvider).setInt('counter', state);
   }
 }
 
 // BMI計算アプリ用プロバイダ
-final resultProvider =
-    StateNotifierProvider((ref) => ResultController(ref.read));
+final resultProvider = StateNotifierProvider<ResultController, String>(
+    (ref) => ResultController(ref.read));
 
-class ResultController extends StateNotifier {
-  ResultController(this._refRead) : super(0);
+class ResultController extends StateNotifier<String> {
+  ResultController(this._read) : super('');
 
-  final Reader _refRead;
+  final Reader _read;
 
   void calculate(String height, String weight) {
     //TODO 数字以外が入力された時の処理をどうするか
+
+    // try-cacthで数字以外の時のエラー回避
+    // try {
+    //   double a = double.parse(height);
+    //   double b = double.parse(weight);
+    //   state = (b / (a * a / 10000)).toStringAsFixed(2);
+    // } catch (e) {
+    //   return; //TODO エラーを画面に返すべき
+    // }
     double a = double.parse(height);
     double b = double.parse(weight);
     state = (b / (a * a / 10000)).toStringAsFixed(2);
-    print((b / (a * a / 10000)).toString());
   }
 
+  // shared_preferencesからデータ読み込み
   Future<List> getFormListPrefs() async {
     final List formList =
-        _refRead(sharedPreferencesProvider).getStringList('form') ??
-            ['', '', ''];
-    state = formList[0];
+        _read(sharedPreferencesProvider).getStringList('form0') ??
+            ['', '', '', ''];
+    state = formList[1];
     return formList;
   }
 
+  // shared_preferencesにデータ保存
   Future<void> setFormPrefs(String height, String weight) async {
-    _refRead(sharedPreferencesProvider)
-        .setStringList('form', [state, height, weight]);
+    _read(sharedPreferencesProvider)
+        .setStringList('form0', ['0', state, height, weight]);
   }
 }
 
 // BMI履歴用プロバイダ
-final listProvider =
-    StateNotifierProvider.autoDispose((ref) => ListController<List>(ref.read));
+final listProvider = StateNotifierProvider.autoDispose<ListController, List>(
+    (ref) => ListController(ref.read));
 
-class ListController<List> extends StateNotifier {
-  ListController(this._refRead) : super([]);
+class ListController extends StateNotifier<List> {
+  ListController(this._read) : super([]);
 
-  final Reader _refRead;
-
+  final Reader _read;
+  // shared_preferencesからデータを読み込み
   Future<void> getListprefs() async {
-    if (_refRead(sharedPreferencesProvider).getStringList('form') != null) {
-      state.add(_refRead(sharedPreferencesProvider).getStringList('form'));
+    if (_read(sharedPreferencesProvider).getStringList('form0') != null) {
+      state.add(_read(sharedPreferencesProvider).getStringList('form0'));
     }
   }
+
+  // 保存されたデータを削除
+  Future<void> clearListPrefs(key) async {
+    final String prefsKey = 'form' + key.toString();
+    await _read(sharedPreferencesProvider).remove(prefsKey);
+  }
 }
-
-  // Future<void> getHeightPrefs() async {
-  //   if (_refRead(sharedPreferencesProvider).getString('height') != null) {
-  //     state.add(_refRead(sharedPreferencesProvider).getString('height'));
-  //   }
-  //   if (_refRead(sharedPreferencesProvider).getString('weight') != null) {
-  //     state.add(_refRead(sharedPreferencesProvider).getString('weight'));
-  //   }
-  // }}
-

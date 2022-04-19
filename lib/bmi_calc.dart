@@ -19,8 +19,8 @@ class BmiCalcApp extends HookConsumerWidget {
       Future(() async {
         final formList =
             await calculate.getFormListPrefs(); // TODO なぜawaitが要るのか
-        heightTextEditingController.text = formList[1].toString();
-        weightTextEditingController.text = formList[2].toString();
+        heightTextEditingController.text = formList[2].toString();
+        weightTextEditingController.text = formList[3].toString();
       });
       return null;
     }, []);

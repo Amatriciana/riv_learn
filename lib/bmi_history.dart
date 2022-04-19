@@ -22,31 +22,39 @@ class BmiHistory extends HookConsumerWidget {
         title: const Text('BMI Calculate History'),
       ),
       body: ListView.builder(
-        itemCount: listState.state.length,
+        itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  width: 1,
-                  color: Colors.grey,
+          return Dismissible(
+            key: UniqueKey(),
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      'No.[${list[index][0]}]  '
+                      '身長: ${list[index][2]}  '
+                      '体重: ${list[index][3]}  '
+                      'BMI: ${list[index][1]}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            child: ListTile(
-              title: Text(
-                '身長: ${listState.state[index][1]}  '
-                '体重: ${listState.state[index][2]}  '
-                'BMI: ${listState.state[index][0]}',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
-              onTap: () {
-                print(list);
-              },
-            ),
+            onDismissed: (direction) {
+              listState.clearListPrefs(list[index][0]);
+            },
           );
         },
       ),
