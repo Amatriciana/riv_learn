@@ -39,9 +39,10 @@ class BmiHistory extends HookConsumerWidget {
                   ),
                   child: ListTile(
                     title: Text(
-                      '身長: ${list[index][1]}  '
-                      '体重: ${list[index][2]}  '
-                      'BMI: ${list[index][0]}',
+                      'No.[${list[index][0]}]  '
+                      '身長: ${list[index][2]}  '
+                      '体重: ${list[index][3]}  '
+                      'BMI: ${list[index][1]}',
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -52,7 +53,7 @@ class BmiHistory extends HookConsumerWidget {
               ],
             ),
             onDismissed: (direction) {
-              listState.clearListPrefs('form');
+              listState.clearListPrefs(list[index][0]);
             },
           );
         },

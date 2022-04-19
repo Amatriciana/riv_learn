@@ -66,15 +66,16 @@ class ResultController extends StateNotifier<String> {
   // shared_preferencesからデータ読み込み
   Future<List> getFormListPrefs() async {
     final List formList =
-        _read(sharedPreferencesProvider).getStringList('form') ?? ['', '', ''];
-    state = formList[0];
+        _read(sharedPreferencesProvider).getStringList('form0') ??
+            ['', '', '', ''];
+    state = formList[1];
     return formList;
   }
 
   // shared_preferencesにデータ保存
   Future<void> setFormPrefs(String height, String weight) async {
     _read(sharedPreferencesProvider)
-        .setStringList('form', [state, height, weight]);
+        .setStringList('form0', ['0', state, height, weight]);
   }
 }
 
@@ -88,13 +89,14 @@ class ListController extends StateNotifier<List> {
   final Reader _read;
   // shared_preferencesからデータを読み込み
   Future<void> getListprefs() async {
-    if (_read(sharedPreferencesProvider).getStringList('form') != null) {
-      state.add(_read(sharedPreferencesProvider).getStringList('form'));
+    if (_read(sharedPreferencesProvider).getStringList('form0') != null) {
+      state.add(_read(sharedPreferencesProvider).getStringList('form0'));
     }
   }
 
   // 保存されたデータを削除
   Future<void> clearListPrefs(key) async {
-    await _read(sharedPreferencesProvider).remove(key);
+    final String prefsKey = 'form' + key.toString();
+    await _read(sharedPreferencesProvider).remove(prefsKey);
   }
 }
