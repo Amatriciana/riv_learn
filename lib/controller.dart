@@ -23,14 +23,16 @@ class CounterController extends StateNotifier<int> {
 
   final Reader _read;
 
-  void increment() => state++;
-  void decrement() => state--;
-  void reset() => state = 0;
+  void increment() => state++; // カウントアップ
+  void decrement() => state--; // カウントダウン
+  void reset() => state = 0; // カウントを0に
 
+  // shared_preferencesからデータ読み込み
   Future<void> getCountPrefs() async {
     state = _read(sharedPreferencesProvider).getInt('counter') ?? 0;
   }
 
+  // shared_preferencesにデータ保存
   Future<void> setCountPrefs() async {
     _read(sharedPreferencesProvider).setInt('counter', state);
   }
@@ -61,6 +63,7 @@ class ResultController extends StateNotifier<String> {
     state = (b / (a * a / 10000)).toStringAsFixed(2);
   }
 
+  // shared_preferencesからデータ読み込み
   Future<List> getFormListPrefs() async {
     final List formList =
         _read(sharedPreferencesProvider).getStringList('form') ?? ['', '', ''];
@@ -68,6 +71,7 @@ class ResultController extends StateNotifier<String> {
     return formList;
   }
 
+  // shared_preferencesにデータ保存
   Future<void> setFormPrefs(String height, String weight) async {
     _read(sharedPreferencesProvider)
         .setStringList('form', [state, height, weight]);
@@ -82,13 +86,14 @@ class ListController extends StateNotifier<List> {
   ListController(this._read) : super([]);
 
   final Reader _read;
-
+  // shared_preferencesからデータを読み込み
   Future<void> getListprefs() async {
     if (_read(sharedPreferencesProvider).getStringList('form') != null) {
       state.add(_read(sharedPreferencesProvider).getStringList('form'));
     }
   }
 
+  // 保存されたデータを削除
   Future<void> clearListPrefs(key) async {
     await _read(sharedPreferencesProvider).remove(key);
   }
