@@ -39,11 +39,11 @@ class CounterController extends StateNotifier<int> {
 }
 
 // BMI計算アプリ用プロバイダ
-final resultProvider = StateNotifierProvider<ResultController, String>(
+final resultProvider = StateNotifierProvider<ResultController, List<String>>(
     (ref) => ResultController(ref.read));
 
-class ResultController extends StateNotifier<String> {
-  ResultController(this._read) : super('');
+class ResultController extends StateNotifier<List<String>> {
+  ResultController(this._read) : super([]);
 
   final Reader _read;
 
@@ -60,35 +60,21 @@ class ResultController extends StateNotifier<String> {
     // }
     double a = double.parse(height);
     double b = double.parse(weight);
-    state = (b / (a * a / 10000)).toStringAsFixed(2);
+    String c = (b / (a * a / 10000)).toStringAsFixed(2);
+    state.addAll(['0', a.toString(), b.toString(), c.toString()]);
   }
 
   // shared_preferencesからデータ読み込み
-  Future<List> getFormListPrefs() async {
-    final List formList =
-        _read(sharedPreferencesProvider).getStringList('form0') ??
-            ['', '', '', ''];
-    state = formList[1];
-    return formList;
+  Future<void> getFormListPrefs() async {
+    print(state);
+    state = _read(sharedPreferencesProvider).getStringList('form0') ??
+        ['0', '2', '3', '4'];
+    print(state);
   }
 
   // shared_preferencesにデータ保存
   Future<void> setFormPrefs(String height, String weight) async {
-    var now = DateTime.now();
-    String now2 = (now.month.toString() +
-        '/' +
-        now.day.toString() +
-        ' ' +
-        now.hour.toString() +
-        ':' +
-        now.minute.toString());
-    _read(sharedPreferencesProvider).setStringList('form0', [
-      '0',
-      state,
-      height,
-      weight,
-      now2,
-    ]);
+    _read(sharedPreferencesProvider).setStringList('form0', state);
   }
 }
 
