@@ -74,8 +74,21 @@ class ResultController extends StateNotifier<String> {
 
   // shared_preferencesにデータ保存
   Future<void> setFormPrefs(String height, String weight) async {
-    _read(sharedPreferencesProvider)
-        .setStringList('form0', ['0', state, height, weight]);
+    var now = DateTime.now();
+    String now2 = (now.month.toString() +
+        '/' +
+        now.day.toString() +
+        ' ' +
+        now.hour.toString() +
+        ':' +
+        now.minute.toString());
+    _read(sharedPreferencesProvider).setStringList('form0', [
+      '0',
+      state,
+      height,
+      weight,
+      now2,
+    ]);
   }
 }
 

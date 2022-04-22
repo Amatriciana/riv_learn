@@ -39,10 +39,10 @@ class BmiHistory extends HookConsumerWidget {
                   ),
                   child: ListTile(
                     title: Text(
-                      'No.[${list[index][0]}]  '
                       '身長: ${list[index][2]}  '
                       '体重: ${list[index][3]}  '
-                      'BMI: ${list[index][1]}',
+                      'BMI: ${list[index][1]}  '
+                      '${list[index][4]}',
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 18,
