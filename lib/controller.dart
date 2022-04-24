@@ -67,7 +67,7 @@ class ResultController extends StateNotifier<String> {
   Future<List> getFormListPrefs() async {
     final List formList =
         _read(sharedPreferencesProvider).getStringList('form0') ??
-            ['', '', '', ''];
+            ['', '', '', '', ''];
     state = formList[1];
     return formList;
   }
