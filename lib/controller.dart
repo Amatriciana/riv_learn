@@ -75,7 +75,9 @@ class ResultController extends StateNotifier<String> {
   // shared_preferencesにデータ保存
   Future<void> setFormPrefs(String height, String weight) async {
     var now = DateTime.now();
-    String now2 = (now.month.toString() +
+    String now2 = (now.year.toString() +
+        '/' +
+        now.month.toString() +
         '/' +
         now.day.toString() +
         ' ' +
